@@ -1,28 +1,61 @@
 package com.biblioteca.escolar.modelos;
 
-public class Livros {
-    Long id;
-    String titulo;
-    String autor;
-    String isbn;
-    Boolean disponibilidade;
 
-    public Livros() {
+import jakarta.persistence.*;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
+@Entity
+@Table(name = "tabela_livros")
+public class Livros implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    @Column(nullable = false, unique = true)
+    private String titulo;
+
+    @Column(nullable = false)
+    private String autor;
+
+    @Column(nullable = false, unique = true)
+    private String isbn;
+
+    @Column(nullable = false)
+    private Boolean disponibilidade;
+
+
+    //Relacionamentos
+    @ManyToOne
+    @JoinColumn(name = "editora_id")
+    private Editora edirora;
+
+    @ManyToMany
+    @JoinTable(
+            name = "tabela_livros_autores",
+            joinColumns = @JoinColumn(name = "livro_id"),
+            inverseJoinColumns = @JoinColumn(name = "autor_id"))
+    private Set<Autor> autores = new HashSet<>();
+
+    //Getters e Setters
+    public Editora getEdirora() {
+        return edirora;
     }
 
-    public Livros(Long id, String titulo, String autor, String isbn, Boolean disponibilidade) {
-        this.id = id;
-        this.titulo = titulo;
-        this.autor = autor;
-        this.isbn = isbn;
-        this.disponibilidade = disponibilidade;
+    public void setEdirora(Editora edirora) {
+        this.edirora = edirora;
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

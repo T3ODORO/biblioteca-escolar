@@ -1,26 +1,31 @@
 package com.biblioteca.escolar.modelos;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
-public class Reserva {
-    Long id;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.UUID;
+
+@Entity
+@Table(name = "tabela_reserva")
+public class Reserva implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
+
+    @Column(nullable = false)
     LocalDate dataReserva;
+
+    @Column
     String status;
 
-    public Reserva() {
-    }
-
-    public Reserva(Long id, LocalDate dataReserva, String status) {
-        this.id = id;
-        this.dataReserva = dataReserva;
-        this.status = status;
-    }
-
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
